@@ -4,8 +4,9 @@ import torch.nn as nn
 from pyspark.ml.feature import VectorAssembler
 from pyspark.sql import SparkSession
 from pyspark.ml.pipeline import Pipeline
+from ML_Algos import LR, SVDpp
 
-spark = SparkSession.builder.appName("examples").master('local[2]').getOrCreate()
+spark = SparkSession.builder.appName("DeepLearningReco").master('local[2]').getOrCreate()
 df = spark.read.option("inferSchema", "true").csv('mnist_train.csv').coalesce(2)
 
 network = nn.Sequential(
