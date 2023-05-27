@@ -1,44 +1,40 @@
-from sparktorch import serialize_torch_obj, SparkTorch
-import torch
-import torch.nn as nn
-from pyspark.ml.feature import VectorAssembler
+import pandas as pd
 from pyspark.sql import SparkSession
-from pyspark.ml.pipeline import Pipeline
-from ML_Algos import LR, SVDpp
+from ML_Algos.models import MatrixFactorization
 
-spark = SparkSession.builder.appName("DeepLearningReco").master('local[2]').getOrCreate()
-df = spark.read.option("inferSchema", "true").csv('mnist_train.csv').coalesce(2)
+from pipeline import MFSparkPipeline
+from config import core
 
-network = nn.Sequential(
-    nn.Linear(784, 256),
-    nn.ReLU(),
-    nn.Linear(256, 256),
-    nn.ReLU(),
-    nn.Linear(256, 10),
-    nn.Softmax(dim=1)
-)
 
-# Build the pytorch object
-torch_obj = serialize_torch_obj(
-    model=network,
-    criterion=nn.CrossEntropyLoss(),
-    optimizer=torch.optim.Adam,
-    lr=0.0001
-)
+# Create Spark session
+spark = SparkSession.builder.appName("deeprec").master("local[2]").getOrCreate()
 
-# Setup features
-vector_assembler = VectorAssembler(inputCols=df.columns[1:785], outputCol='features')
+# ************************************************************************
 
-# Create a SparkTorch Model with torch distributed. Barrier execution is on by default for this mode.
-spark_model = SparkTorch(
-    inputCol='features',
-    labelCol='_c0',
-    predictionCol='predictions',
-    torchObj=torch_obj,
-    iters=50,
-    verbose=1
-)
+# Load data
+file_path = core.config.app_config.training_data_file
+df = spark.read.option("inferSchema", "true").csv(file_path).coalesce(2)
 
-# Can be used in a pipeline and saved.
-p = Pipeline(stages=[vector_assembler, spark_model]).fit(df)
-p.save('simple_dnn')
+# Get number of users and items
+counts = pd.read_csv(file_path)
+users = len(counts.iloc[4].unique())
+items = len(counts.iloc[5].unique())
+
+# ************************************************************************
+
+# Define the model
+model = MatrixFactorization(num_users=users, num_items=items)
+
+# ************************************************************************
+
+# Create a pipeline with vector assembler and SparkTorch model
+pipeline = MFSparkPipeline(model, df)
+
+# Fit the pipeline on the DataFrame
+pipeline_model = pipeline.fit(df)
+
+# Save the model
+pipeline_model.save(core.config.app_config.trained_models)
+
+# Stop Spark session
+spark.stop()

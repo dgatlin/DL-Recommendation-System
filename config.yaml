@@ -1,0 +1,18 @@
+# Package Overview
+package_name: model_package
+
+# Data Files
+training_data_file: data/ratings2.csv
+test_data_file: test.csv
+trained_models: trained_models/mf_dnn
+
+# Model Variables
+output_col: features
+momentum: 0.9
+input_col: features
+label_col: _c2
+prediction_col: predictions
+iterations: 200
+verbose: 1
+max_epochs: 10
+lr: 0.0001
