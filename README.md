@@ -24,8 +24,6 @@ This allows for more accurate and personalized recommendations, as the model can
 between users and items that may not be captured by traditional matrix factorization methods.
 
 
-
-
 ## Spark Distributed Model Training
 ![My Image](img/spark.png)
 
@@ -44,10 +42,17 @@ leading to more accurate and effective recommendations.  Overall, training a dee
 factorization recommendation engine with Apache Spark enhances performance, scalability, and productivity,
 enabling the development of high-quality recommendation systems at scale.
 
-## Literature and Inspiration
+## Special Note
+Spark is able to deal with much bigger work loads than most options. If your data is larger than 1TB,
+Spark is probably the way to go. However, [Dask](https://www.dask.org/) might also not be the best
+suited tool for the project. There are other Pythonic solutions for Big Data, such as[Ray](https://www.ray.io/) and
+[Modin](https://modin.readthedocs.io/en/stable/), [Vaex](https://vaex.io/) and [Rapids](https://rapids.ai/); all have their
+pros and cons. But with more than 1TB of data, Spark is probably the best option.
 
+## Literature and Inspiration
 * [An Introduction to Recommender Systems (+9 Easy Examples)](https://www.iteratorshq.com/blog/an-introduction-recommender-systems-9-easy-examples/)
 * [An In-Depth Guide to How Recommender Systems Work](https://builtin.com/data-science/recommender-systems)
+* [Matrix Factorization for Recommender Systems](https://www.diva-portal.org/smash/get/diva2:633561/FULLTEXT01.pdf)
 * [Matrix Factorization Techniques for Recommender Systems](https://www.asc.ohio-state.edu/statistics/dmsl//Koren_2009.pdf)
 * [An Introduction to Distributed Deep Learning](http://seba1511.net/dist_blog/)
 * [HOGWILD!: A Lock-Free Approach to Parallelizing Stochastic Gradient Descent](https://arxiv.org/pdf/1106.5730.pdf)

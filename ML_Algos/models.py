@@ -1,7 +1,15 @@
 import torch
 
 
+# Embedding layer class for PyTorch model initialization and forward pass computation
 class EmbeddingLayer(torch.nn.Module):
+    """
+    This class is a wrapper for the PyTorch Embedding layer.
+    Base class for all neural network modules.The current model is a subclass
+    this class.Modules can also contain other Modules, allowing to nest them
+    in a tree structure.
+    """
+
     def __init__(self, num_embeddings, embedding_dim):
         super().__init__()
         self.embedding = torch.nn.Embedding(num_embeddings, embedding_dim)

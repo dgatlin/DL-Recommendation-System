@@ -8,13 +8,12 @@ from config import core
 
 class MFSparkPipeline:
     """
-    class encapsulates the necessary components and methods to
+    The class encapsulates the necessary components and methods to
     construct and utilize a pipeline for training and predicting
     with SparkTorch and PyTorch models. It initializes a vector
     assembler, serializes the PyTorch object, creates a
     SparkTorch model, and defines a pipeline consisting of the
     vector assembler and the SparkTorch model.
-
     """
 
     def __init__(self, model, df):
