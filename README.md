@@ -45,7 +45,7 @@ enabling the development of high-quality recommendation systems at scale.
 ## Special Note
 Spark is able to deal with much bigger work loads than most options. If your data is larger than 1TB,
 Spark is probably the way to go. However, [Dask](https://www.dask.org/) might also not be the best
-suited tool for the project. There are other Pythonic solutions for Big Data, such as[Ray](https://www.ray.io/) and
+suited tool for the project. There are other Pythonic solutions for Big Data, such as [Ray](https://www.ray.io/) and
 [Modin](https://modin.readthedocs.io/en/stable/), [Vaex](https://vaex.io/) and [Rapids](https://rapids.ai/); all have their
 pros and cons. But with more than 1TB of data, Spark is probably the best option.
 
