@@ -3,7 +3,6 @@ from pathlib import Path
 
 from config.core import (
     DATASET_DIR,
-    TRAINED_MODEL_DIR,
     config,
 )
 
@@ -15,3 +14,15 @@ def load_dataset(*, file_name: str) -> pd.DataFrame:
     # rename variables beginning with numbers to avoid syntax errors later
     transformed = dataframe.rename(columns=config.model_config.variables_to_rename)
     return transformed
+
+
+# Load data
+file_path = config.app_config.training_data_file
+
+
+def load_nums():
+    # Get number of users and items
+    counts = pd.read_csv(file_path)
+    users = len(counts.iloc[4].unique())
+    items = len(counts.iloc[5].unique())
+    return [users, items]

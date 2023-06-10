@@ -1,7 +1,6 @@
 import torch
 
 
-# Embedding layer class for PyTorch model initialization and forward pass computation
 class EmbeddingLayer(torch.nn.Module):
     """
     This class is a wrapper for the PyTorch Embedding layer.

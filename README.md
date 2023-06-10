@@ -18,11 +18,6 @@ capture the inherent characteristics and preferences of users and items.
  These embeddings are then combined and processed through additional layers to predict the user's preference or
  rating for a particular item.
 
-By leveraging deep learning techniques, such as non-linear activations, regularization, learning rate schedules,
-and different optimizers, the model can learn complex patterns and dependencies present in the user-item interactions.
-This allows for more accurate and personalized recommendations, as the model can capture intricate relationships
-between users and items that may not be captured by traditional matrix factorization methods.
-
 
 ## Spark Distributed Model Training
 ![My Image](img/spark.png)
@@ -35,12 +30,39 @@ scalability is crucial when dealing with large datasets and complex models. Seco
 built-in support for data preprocessing and transformation tasks simplifies the data preparation process,
 ensuring efficient feature engineering for the recommendation engine.
 
-Additionally, Spark's integration with popular deep learning libraries like TensorFlow and PyTorch
-enables seamless integration of deep learning algorithms into the recommendation system. The combination
-of Spark's distributed computing capabilities and deep learning frameworks optimizes the training process,
-leading to more accurate and effective recommendations.  Overall, training a deep learning matrix
-factorization recommendation engine with Apache Spark enhances performance, scalability, and productivity,
-enabling the development of high-quality recommendation systems at scale.
+## Example
+
+```python
+from pyspark.sql import SparkSession
+from ML_Algos.models import MatrixFactorization
+from config import core
+from pipeline import MFSparkPipeline
+from processing import data_manager
+
+# Create Spark session
+spark = SparkSession.builder.appName("deeprec").master("local[2]").getOrCreate()
+
+# Load data
+file_path = core.config.app_config.training_data_file
+df = spark.read.option("inferSchema", "true").csv(file_path).coalesce(2)
+
+nums = data_manager.load_nums()
+
+# Define the model
+model = MatrixFactorization(num_users=nums[0], num_items=nums[1])
+
+# Create a pipeline with vector assembler and SparkTorch model
+pipeline = MFSparkPipeline(model, df)
+
+# Fit the pipeline on the DataFrame
+pipeline_model = pipeline.fit(df)
+
+# Save the model
+pipeline_model.save(core.config.app_config.trained_models)
+
+# Stop Spark session
+spark.stop()
+```
 
 ## Special Note
 Spark is able to deal with much bigger work loads than most options. If your data is larger than 1TB,
