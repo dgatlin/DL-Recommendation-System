@@ -1,7 +1,7 @@
 import torch
 from pyspark.ml.feature import VectorAssembler
-from sparktorch import serialize_torch_obj, SparkTorch
 from pyspark.ml.pipeline import Pipeline
+from sparktorch import SparkTorch, serialize_torch_obj
 
 from config import core
 

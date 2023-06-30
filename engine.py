@@ -1,11 +1,9 @@
 from pyspark.sql import SparkSession
-from ML_Algos.models import MatrixFactorization
 
-from pipeline import MFSparkPipeline
 from config import core
-
+from ML_Algos.models import MatrixFactorization
+from pipeline import MFSparkPipeline
 from processing import data_manager
-
 
 # Create Spark session
 spark = SparkSession.builder.appName("deeprec").master("local[2]").getOrCreate()

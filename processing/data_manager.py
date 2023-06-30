@@ -1,10 +1,8 @@
-import pandas as pd
 from pathlib import Path
 
-from config.core import (
-    DATASET_DIR,
-    config,
-)
+import pandas as pd
+
+from config.core import DATASET_DIR, config
 
 
 # Load data set
